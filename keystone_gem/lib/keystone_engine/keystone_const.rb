@@ -1,5 +1,5 @@
 
-module Keystone
+module KeystoneEngine
 	KS_API_MAJOR = 0
 	KS_API_MINOR = 9
 	KS_VERSION_MAJOR = 0

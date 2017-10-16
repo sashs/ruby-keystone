@@ -15,3 +15,5 @@ This repository contains only the bindings for ruby. The Keystone-Engine library
 ## Install ruby binding
  * make install
     
+## Install from RubyGems.org
+ * gem install keystone-engine

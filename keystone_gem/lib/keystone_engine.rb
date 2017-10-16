@@ -20,7 +20,7 @@ require "ffi"
 require "objspace"
 
 
-module Keystone extend FFI::Library
+module KeystoneEngine extend FFI::Library
     ffi_lib "keystone"
 
     class IntPtr < FFI::Struct
@@ -49,13 +49,13 @@ module Keystone extend FFI::Library
         public
         def initialize(arch, mode)
             _ks = KsEnginePtr.new
-            err = Keystone::ks_open(arch, mode, _ks)
+            err = KeystoneEngine::ks_open(arch, mode, _ks)
             if err != KS_ERR_OK
-                raise KsError, Keystone::ks_strerror(err).read_string
+                raise KsError, KeystoneEngine::ks_strerror(err).read_string
             end
             @ks = _ks[:value]
 
-            ObjectSpace.define_finalizer(self, proc{ Keystone::ks_close(ks) })
+            ObjectSpace.define_finalizer(self, proc{ KeystoneEngine::ks_close(ks) })
         end
 
         def asm(instructions, address=0)
@@ -63,10 +63,10 @@ module Keystone extend FFI::Library
             bytes = StringPtr.new
             size = IntPtr.new 
             count = IntPtr.new
-            err = Keystone::ks_asm(ks, inst, address, bytes, size, count)
+            err = KeystoneEngine::ks_asm(ks, inst, address, bytes, size, count)
 
             if err != KS_ERR_OK
-                raise KsError, Keystone::ks_strerror(err).read_string
+                raise KsError, KeystoneEngine::ks_strerror(err).read_string
             end
 
             return [bytes[:value].read_string(size[:value]), count[:value]]
